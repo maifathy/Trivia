@@ -1,0 +1,197 @@
+# Introduction:
+This is a local API used to handle the requests of Trivia app, backend is hosted on http://localhost:5000
+right now and that is the way it is accessed by in the frontend.
+No Authentication is required to access the API.
+
+# Endpoints:
+GET '/categories'
+    - Fetches a dictionary comprehension of categories in which the keys are the ids and the value is the corresponding string of the category
+    - Request Arguments: None
+    - Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
+    Sample: curl http://localhost:5000/categories
+    {
+        "categories" : [
+        {'1' : "Science",
+        '2' : "Art",
+        '3' : "Geography",
+        '4' : "History",
+        '5' : "Entertainment",
+        '6' : "Sports"}
+        ],
+        "success": true
+    }
+
+GET '/questions'
+    - Fetches a dictionary of questions in which the keys are the ids and the value is the corresponding string of the question
+    - Request Arguments: None
+    - Returns: An object with multiple keys, questions, total_questions, categories and current_category. 
+    Sample: curl http://localhost:5000/questions
+    {
+        "categories": {
+            "1": "Science",
+            "2": "Art",
+            "3": "Geography",
+            "4": "History",
+            "5": "Entertainment",
+            "6": "Sports"
+        },
+        "current_category": {
+            "3": "Geography",
+            "4": "History",
+            "5": "Entertainment",
+            "6": "Sports"
+        },
+        "questions": [
+            {
+            "answer": "Apollo 13",
+            "category": 5,
+            "difficulty": 4,
+            "id": 2,
+            "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+            },
+            {
+            "answer": "Tom Cruise",
+            "category": 5,
+            "difficulty": 4,
+            "id": 4,
+            "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+            },
+            .
+            .
+            .
+        ],
+        "success": true,
+        "total_questions": 29
+    }
+
+
+DELETE '/questions/<int:question_id>'
+    - Deletes the entire question with the specified id
+    - Request Arguments: question id
+    - Returns: An object contains the deleted question id
+    Sample: curl -X DELETE http://localhost:5000/questions/35
+    {
+        "deleted": 35,
+        "success": true
+    }
+
+POST '/questions'    
+    - Creates new question
+    - Request Arguments: question, answer, difficulty and category
+    - Returns: An object contains the created question id
+    Sample: curl -X POST http://localhost:5000/questions -H "Content-Type:application/json" -d '{"question": "How far is the Sun?", "answer": "90 million miles", "difficulty": 4, "category": 1}'
+    {
+        "created": 37,
+        "success": true
+    }
+
+POST '/questions'
+    - Searches for question by any part ot it
+    - Request Arguments: search term
+    - Returns: An object with multiple keys, questions, total_questions, categories and current_category.
+    Sample: curl -X POST http://localhost:5000/questions -H "Content-Type:application/json" -d '{"searchTerm": "title"}'
+    {
+        "current_category": {
+            "4": "History",
+            "5": "Entertainment"
+        },
+        "questions": [
+            {
+            "answer": "Maya Angelou",
+            "category": 4,
+            "difficulty": 2,
+            "id": 5,
+            "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+            },
+            {
+            "answer": "Edward Scissorhands",
+            "category": 5,
+            "difficulty": 3,
+            "id": 6,
+            "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+            }
+        ],
+        "success": true,
+        "total_questions": 2
+    }
+
+GET '/categories/<int:category_id>/questions'
+    - Fetches a dictionary of questions in which the keys are the ids and the value is the corresponding string of the question
+      according to the category
+    - Request Arguments: category id
+    - Returns: An object with multiple keys, questions, total_questions, categories and current_category. 
+    Sample: curl http://localhost:5000/categories/2/questions
+    {
+        "current_category": 2,
+        "questions": [
+            {
+            "answer": "Escher",
+            "category": 2,
+            "difficulty": 1,
+            "id": 16,
+            "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
+            },
+            {
+            "answer": "Mona Lisa",
+            "category": 2,
+            "difficulty": 3,
+            "id": 17,
+            "question": "La Giaconda is better known as what?"
+            },
+            {
+            "answer": "One",
+            "category": 2,
+            "difficulty": 4,
+            "id": 18,
+            "question": "How many paintings did Van Gogh sell in his lifetime?"
+            },
+            {
+            "answer": "Jackson Pollock",
+            "category": 2,
+            "difficulty": 2,
+            "id": 19,
+            "question": "Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?"
+            }
+        ],
+        "success": true,
+        "total_questions": 4
+    }
+
+POST '/quizzes'
+    - Fetches a random question for a certain category of from all questions, the question is fltered to be not repeated
+    - Request Arguments: quiz category id, previous questions' ids
+    - Returns: An object with the returned question
+    Sample: curl -X POST http://localhost:5000/quizzes -H "Content-Type:application/json" -d '{"previous_questions": [], "quiz_category": {"type": "Science", "id": 1}}'
+    {
+        "question": {
+            "answer": "The Liver",
+            "category": 1,
+            "difficulty": 4,
+            "id": 20,
+            "question": "What is the heaviest organ in the human body?"
+        },
+        "success": true
+    }
+
+# Error Handler:
+Errors are returned in JSON format:
+    {
+    "error": 422,
+    "message": "Operation is unprocessable.",
+    "success": false
+    }
+The API handles errors: 
+    * 400: Bad request
+    * 404: Resource not found
+    * 405: Method not allowed
+    * 422: Unprocessable request
+
+
+GET ...
+POST ...
+DELETE ...
+
+GET '/categories'
+
+
+```
